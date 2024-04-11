@@ -1,0 +1,21 @@
+---
+import { neon } from '@neondatabase/serverless';
+
+const sql = neon(import.meta.env.CONNECTION_STRING);
+
+let data = null;
+
+try {
+  data = await sql`SELECT * FROM users`;
+} catch (error) {
+  console.error(error);
+}
+---
+
+<html lang='en'>
+  <body>
+    <a href='/'>Back</a>
+    <h1>Serverless Driver HTTP</h1>
+    <pre>{JSON.stringify(data, null, 2)}</pre>
+  </body>
+</html>

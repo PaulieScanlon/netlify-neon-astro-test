@@ -1,0 +1,25 @@
+---
+import { Pool, neonConfig } from '@neondatabase/serverless';
+import ws from 'ws';
+
+const pool = new Pool({ connectionString: import.meta.env.CONNECTION_STRING });
+neonConfig.webSocketConstructor = ws;
+
+let data = null;
+
+try {
+  data = await pool.query('SELECT * FROM users');
+} catch (error) {
+  console.error(error);
+} finally {
+  await pool.end();
+}
+---
+
+<html lang='en'>
+  <body>
+    <a href='/'>Back</a>
+    <h1>Serverless Driver Websockets</h1>
+    <pre>{JSON.stringify(data.rows, null, 2)}</pre>
+  </body>
+</html>
